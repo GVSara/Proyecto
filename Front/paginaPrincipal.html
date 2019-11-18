@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">    
+<link rel="stylesheet" type="text/css" href="./EstilosInicio.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+ <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+ <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script type="text/javascript" src="./paginaPrincipal.js"></script>
+
+<header id="main-header">
+
+        <a id="logo-header" href="#">
+            <span class="site-name">Kostuak</span>
+            <span class="site-desc">Visualiza tus gastos</span>
+        </a> <!-- / #logo-header -->
+    
+        <nav>
+            <ul>
+                <li><a href="#">Log In</a></li>
+                <li><a href="#">Regístrate</a></li>
+            </ul>
+        </nav><!-- / nav -->
+    
+    </header><!-- / #main-header -->
+    
+    
+
+
+
+<section id="main-content">
+    <div id='tabsMeses' class="col-md-12">
+        <ul class='nav nav-tabs'>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-1' onclick='PaginaPrincipal.init()'>Enero</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-2' onclick='PaginaPrincipal.init()'>Febrero</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-3' onclick='PaginaPrincipal.init()'>Marzo</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-4' onclick='PaginaPrincipal.init()'>Abril</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-5' onclick='PaginaPrincipal.init()'>Mayo</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-6' onclick='PaginaPrincipal.init()'>Junio</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-7' onclick='PaginaPrincipal.init()'>Julio</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-8' onclick='PaginaPrincipal.init()'>Agosto</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-9' onclick='PaginaPrincipal.init()'>Septiembre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-10' onclick='PaginaPrincipal.init()'>Octubre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-11' onclick='PaginaPrincipal.init()'>Noviembre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-12' onclick='PaginaPrincipal.init()'>Diciembre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-13' onclick='PaginaPrincipal.init()'>Todos</a></li>
+        </ul>
+    </div>
+    <div id="divTablaObj" class="col-md-12"'>
+        <div class=' col-md-7'>
+        <!-- //DATATABLE -->
+            <table id='gastosMes' width='100%' class='table table-hover'>
+                <thead>
+                    <th class='wpTableHeader'>Categoría</th>
+                    <th class='wpTableHeader'>Descripción</th>
+                    <th class='wpTableHeader'>€</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class='col-md-5'>
+            <div>
+                <h3>Objetivos<span class="glyphicon glyphicon-plus" style='float: right;'></span></h3>
+            </div>
+            <!-- //OBJETIVO -->
+        </div>
+    </div>
+    <div class='row'>
+        <div id='grafico' class='col-md-6'>
+        </div>
+        <div class='col-md-6'>
+            <!-- //DATOS -->
+        </div>
+    </div>
+    
+    </div>
+    
+    </section><!-- / #main-content -->
+    
+    
+<!--     
+    <footer id="main-footer">
+        <p>&copy; 2019</p>
+    </footer>/ #main-footer -->
+ </html>   
