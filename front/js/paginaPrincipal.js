@@ -13,7 +13,8 @@ PaginaPrincipal.init = function () {
     xhttp.open("GET", "Back/gastos/leerGastos.php?id=1&mes=Noviembre&anho=2019", true);
     xhttp.send();*/
     var mes=meses[mesActual]
-    var url = "../Back/gastos/leerGastos.php?id=1&mes="+ mes +"&anho="+year;
+    url=""
+    var url = "../../php/gastos/leerGastos.php?id=1&mes="+ mes +"&anho="+year;
     $.ajax({
       method: "GET", url, 
       success: PaginaPrincipal.datosSucces
@@ -93,9 +94,9 @@ PaginaPrincipal.GastosDatatable = function () {
             "search": "búsqueda",
         },
         "aoColumns": [
-            { "sWidth": "33%" },
-            { "sWidth": "33%" },
-            { "sWidth": "33%" },
+            { "sWidth": "32%" },
+            { "sWidth": "32%" },
+            { "sWidth": "32%" },
         ],
 
     });
