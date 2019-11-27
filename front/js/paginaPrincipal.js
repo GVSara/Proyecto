@@ -4,14 +4,6 @@ var mesActual;
 var year;
 var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 PaginaPrincipal.init = function () {
-  /*  var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-       console.log(JSON.parse(this.responseText));
-      }
-    };
-    xhttp.open("GET", "Back/gastos/leerGastos.php?id=1&mes=Noviembre&anho=2019", true);
-    xhttp.send();*/
     var mes=meses[mesActual]
     url=""
     var url = "../../php/gastos/leerGastos.php?id=1&mes="+ mes +"&anho="+year;
@@ -34,7 +26,8 @@ PaginaPrincipal.datosSucces = function (data){
     PaginaPrincipal.GastosDatatable();
 }
 PaginaPrincipal.GastosGrafico = function () {
-    $("#grafico").chart('container', {
+    $("#grafico").highcharts({ 
+      colors: ["#7cb5ec", "#f7a35c"],  
     chart: {
       plotBackgroundColor: null,
       plotBorderWidth: null,
@@ -42,7 +35,7 @@ PaginaPrincipal.GastosGrafico = function () {
       type: 'pie'
     },
     title: {
-      text: 'Gráfico mensual'
+      text: 'Gráfico gastos mensuales'
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -66,6 +59,8 @@ PaginaPrincipal.GastosGrafico = function () {
     series: [{
       name: 'Share',
       data: [
+        { name: 'Ocio', y: 22.99 },
+        { name: 'Facturas', y: 76 },
       ]
     }]
   });
@@ -108,7 +103,7 @@ mesActual=hoy.getMonth();
 year = hoy.getFullYear();
 console.log(mesActual);
 $("#tabsMeses").tabs({ active: mesActual});
-
+PaginaPrincipal.GastosGrafico();
 console.log("js");
     PaginaPrincipal.init(); 
 });

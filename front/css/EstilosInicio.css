@@ -122,10 +122,22 @@ nav {
 #tabsMeses{
     font-size: initial;
     background: silver;
-    position: fixed;
+	position: fixed;
+	padding: 0;
+}
+#tabsMeses > ul{	
+	display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+#tabsMeses> ul > li{
+	float: none;
+	display: table-cell;
+	width:100%;
 }
 #tabsMeses a{ 
-    color: #333;
+	color: #333;
+	text-align: center;
 }
 	#main-content header{
 		padding: 40px;

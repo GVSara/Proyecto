@@ -4,6 +4,7 @@ class Gastos{
     // conexión coa táboa da base de datos
     private $conn;
     private $tabla = "gastos";
+    private $tablaCategorias = "categorias";
  
     // propiedades do obxecto
     public $id;
@@ -21,7 +22,7 @@ class Gastos{
     
    function leerGastos(){
         try{
-            $stmt =$this->conn->prepare("SELECT descripcion, cantidad, categorias_idcategorias FROM ". $this->tabla ." WHERE idgastos = ? AND mes = ? AND anho = ?");
+            $stmt =$this->conn->prepare("SELECT descripcion, cantidad, categorias_idcategorias FROM ". $this->tabla ." WHERE usuarios_idusuario = ? AND mes = ? AND anho = ?");
             $stmt->bind_param('isi', $this->id, $this->mes, $this->anho); 
 
         }catch(Exception $err){

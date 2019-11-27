@@ -1,25 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+<meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">    
-<!-- 
- <link rel="stylesheet" type="text/css" href="../css/EstilosInicio.css">
-<script type="text/javascript"  src="../../resources/librerias/JQuery/jquery-2.1.1.min.js"></script>
-<script type="text/javascript"  src="../../resources/librerias/BootStrap/bootstrap.min.js"></script>
-<script type="text/javascript"  src="../../resources/librerias/JQuery/jquery-ui.min.js"></script>
-<script type="text/javascript"  src="../../resources/librerias/Datatables/jquery.dataTables.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="../../resources/librerias/JQueryUI/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css" href="../../resources/librerias/BootStrap/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../../resources/librerias/Datatables/jquery.dataTables.min.css">
-
-<script type="text/javascript" src="../js/paginaPrincipal.js"></script> -->
 
 <link rel="stylesheet" type="text/css" href="../css/EstilosInicio.css">
 <script type="text/javascript"  src="../../resources/librerias/Descargas/DataTables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
 <script type="text/javascript"  src="../../resources/librerias/Descargas/DataTables/Bootstrap-3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript"  src="../../resources/librerias/Descargas/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript"  src="../../resources/librerias/Descargas/DataTables/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="../../resources/librerias/Descargas/Highcharts-7.2.1/code/highcharts.js"></script>
+<script src="../../resources/librerias/Descargas/Highcharts-7.2.1/code/modules/exporting.js"></script>
+<script src="../../resources/librerias/Descargas/Highcharts-7.2.1/code/modules/export-data.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../../resources/librerias/Descargas/jquery-ui-1.12.1/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css" href="../../resources/librerias/Descargas/DataTables/Bootstrap-3.3.7/css/bootstrap.min.css">
@@ -29,15 +21,15 @@
 
 <header id="main-header">
 
-        <a id="logo-header" href="#">
+        <a id="logo-header" href="paginaPrincipal.html">
             <span class="site-name">Kostuak</span>
             <span class="site-desc">Visualiza tus gastos</span>
         </a> <!-- / #logo-header -->
     
         <nav>
             <ul>
-                <li><a href="#">Log In</a></li>
-                <li><a href="#">Regístrate</a></li>
+                <li><a href="inicioSesion.html">Iniciar sesión</a></li>
+                <li><a href="registro.html" >Regístrate</a></li>
             </ul>
         </nav><!-- / nav -->
     
@@ -68,7 +60,7 @@
     <div id="divTablaObj" class="col-md-12"'>
         <div class=' col-md-7'>
         <!-- //DATATABLE -->
-        <span class="glyphicon glyphicon-plus" id="glyphiconAñadir"></span>
+        <span  onclick="" class="glyphicon glyphicon-plus" id="glyphiconAñadir"></span>
             <table id='gastosMes' class='table table-hover'>
                 <thead>
                     <th class='wpTableHeader'>Categoría</th>
@@ -97,9 +89,15 @@
     
     </section><!-- / #main-content -->
     
-    
+    <div class="modal fade text-center" id="theModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          </div>
+        </div>
+      </div>  
 <!--     
     <footer id="main-footer">
         <p>&copy; 2019</p>
     </footer>/ #main-footer -->
+    
  </html>   
