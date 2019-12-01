@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">       
+ <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../js/paginaPrincipal.js"></script>
+    <script type="text/javascript"
+        src="../../resources/librerias/Descargas/DataTables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript"
+        src="../../resources/librerias/Descargas/DataTables/Bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../resources/librerias/Descargas/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+        href="../../resources/librerias/Descargas/jquery-ui-1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="../../resources/librerias/Descargas/DataTables/Bootstrap-3.3.7/css/bootstrap.min.css">
+
+</head>
+
+<body>
+<form  action="../../php/usuarios/registrarUsuario.php" method="post">
+    <div class="container">
+        <label  for="categoria"><b>Categoria</b></label>
+        <select id="selectCategoria" name="categoria" form="categoria"></select><br>
+        <label  for="descripcion"><b>Descripcion</b></label>
+        <input type="text" placeholder="Descripcion" name="descripcion" required><br>
+
+        <label for="cantidad"><b>Cantidad</b></label>
+        <input type="number" placeholder="0.00€" name="cantidad" required><label>€</label><br>
+        
+        <div class="clearfix">
+        <button type="submit" class="btn btn-success signupbtn">Enviar</button>
+        </div>
+    </div>
+    </form>
+</body>
+</html>    

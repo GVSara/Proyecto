@@ -1,8 +1,33 @@
 var PaginaPrincipal = PaginaPrincipal || {};
 var gastosArray = [];
+var categorias = {};
 var mesActual;
 var year;
 var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+PaginaPrincipal.initCategorias = function () {
+  var url = "../../php/categorias/leerCategorias.php"
+  $.ajax({
+    method: "GET", url, 
+    success: PaginaPrincipal.datosSuccesCategorias
+  })
+};
+PaginaPrincipal.datosSuccesCategorias = function (data){
+  console.log(data);
+  $.each(data.records, function (idx, item) {
+    var idcategoria=item.idcategorias;
+    var nombreCategoria=item.nombreCategoria;
+    var tipo= item.tipo;
+    console.log(item);
+    if (typeof (categorias[tipo]) == "undefined") {
+      categorias[tipo]=[];
+    categorias[tipo].push({ "id" : idcategoria,"nombreCategoria" : nombreCategoria});
+    console.log(categorias);
+    }else{
+      categorias[tipo].push({ "id" : idcategoria,"nombreCategoria" : nombreCategoria});
+    }
+    //console.log(categoriasArray);
+    });
+}  
 PaginaPrincipal.init = function () {
     var mes=meses[mesActual]
     url=""
@@ -16,7 +41,7 @@ PaginaPrincipal.datosSucces = function (data){
   console.log(data);
   console.log(data.records[0].descripcion);
   $.each(data.records, function (idx, item) {
-    var categoria="-";
+    var categoria=item.nombreCategoria;
     var descripcion=item.descripcion;
     var cantidad=item.cantidad;
     console.log(item);
@@ -95,14 +120,31 @@ PaginaPrincipal.GastosDatatable = function () {
         ],
 
     });
-};    
+};
+PaginaPrincipal.loadigLoadingModal = function (tipo) {
+  //alert("loadig");
+  var html="";
+  console.log(categorias[tipo]);
+
+  $.each(categorias[tipo], function (idx, item) {
+    html += '<option value="' + item.id + '">' + item.nombreCategoria + '</option>';
+});
+console.log(html);
+  $.ajax({url: "../html/formularioAnhadirGastosIngresos.html", success: function(result){
+        $("#contentBody").html(result);
+        $("#selectCategoria").append(html);
+      $("#myModal").modal('show'); 
+
+  }});
+}    
 $(document).ready(function () {
-   
+  PaginaPrincipal.initCategorias();  
 hoy=new Date();
 mesActual=hoy.getMonth();
 year = hoy.getFullYear();
 console.log(mesActual);
 $("#tabsMeses").tabs({ active: mesActual});
+
 PaginaPrincipal.GastosGrafico();
 console.log("js");
     PaginaPrincipal.init(); 

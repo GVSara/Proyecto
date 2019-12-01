@@ -33,6 +33,7 @@ if ('GET' === $metodo) {
     $gastos_arr["records"]=array();
     while ($item=$resultado->fetch_assoc()){
         $item_gasto=array(
+            "nombreCategoria"=> $item["nombreCategoria"],
             "descripcion" => utf8_decode($item["descripcion"]),
             "cantidad" => $item["cantidad"],
         );

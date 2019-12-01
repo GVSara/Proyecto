@@ -22,7 +22,7 @@ class Gastos{
     
    function leerGastos(){
         try{
-            $stmt =$this->conn->prepare("SELECT descripcion, cantidad, categorias_idcategorias FROM ". $this->tabla ." WHERE usuarios_idusuario = ? AND mes = ? AND anho = ?");
+            $stmt =$this->conn->prepare("SELECT G.descripcion, G.cantidad, C.nombreCategoria FROM gastos G INNER JOIN categorias C ON G.categorias_idcategorias = C.idcategorias WHERE usuarios_idusuario = ? AND mes = ? AND anho = ?");
             $stmt->bind_param('isi', $this->id, $this->mes, $this->anho); 
 
         }catch(Exception $err){
