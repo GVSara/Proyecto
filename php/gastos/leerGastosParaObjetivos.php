@@ -20,9 +20,8 @@ $gastos = new Gastos($db);
  
 if ('GET' === $metodo) {
     $id=$gastos->id= $_GET["id"];
-    $mes=$gastos->mes= $_GET["mes"];
     $anho=$gastos->anho= $_GET["anho"];
-    $stmt = $gastos->leerGastos();
+    $stmt = $gastos->leerGastosParaObjetivos();
     $resultado=$stmt->get_result();
     $num=$resultado->num_rows;
 }
@@ -33,9 +32,9 @@ if ('GET' === $metodo) {
     $gastos_arr["records"]=array();
     while ($item=$resultado->fetch_assoc()){
         $item_gasto=array(
-            "nombreCategoria"=> $item["nombreCategoria"],
-            "descripcion" => utf8_decode($item["descripcion"]),
             "cantidad" => $item["cantidad"],
+            "anho" => $item["anho"],
+            "mes" => $item["mes"],
         );
         array_push($gastos_arr["records"],$item_gasto);
     }
@@ -55,7 +54,7 @@ else{
 } 
 
  try{
-   $gastos->leerGastos();
+   $gastos->leerGastosParaObjetivos();
 
 }catch(Exception $err){
     echo "error". $err;

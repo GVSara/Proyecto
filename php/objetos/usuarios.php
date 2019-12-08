@@ -19,7 +19,21 @@ class Usuario{
         $this->conn = $db;
     }
 
-    
+    function leerUsuario(){
+        try{
+            $stmt =$this->conn->prepare("SELECT nombre FROM ". $this->taboa ." WHERE email = ? AND password = ?");
+            $stmt->bind_param('ss', $this->email, $this->password); 
+
+        }catch(Exception $err){
+            echo $err;
+        }
+        $stmt->execute();
+
+            return $stmt;
+
+        $stmt->close();
+   } 
+
     function crear(){
         try{
             $stmt =$this->conn->prepare("INSERT INTO ". $this->taboa ." (nombre, apellidos, password, email) VALUES (?, ?, ?, ?)");

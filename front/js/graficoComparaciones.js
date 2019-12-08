@@ -34,7 +34,7 @@ PaginaPrincipal.initIngresos = function () {
    gastoPorCategoria = {};
   var mes=meses[mesActual]
   url=""
-  var url = "../../php/ingresos/leerIngresos.php?id=1&mes="+ mes +"&anho="+year;
+  var url = "../../php/gastos/leerIngresos.php?id=1&mes="+ mes +"&anho="+year;
   $.ajax({
     method: "GET", url, 
     success: PaginaPrincipal.datosIngresosSucces
@@ -43,11 +43,10 @@ PaginaPrincipal.initIngresos = function () {
 PaginaPrincipal.datosIngresosSucces = function (data){
 console.log(data);
 $.each(data.records, function (idx, item) {
-  ingresos=ingresos+parseFloat(item.cantidad);
-  console.log("ingresos: "+ingresos);
+  ingresos=ingresos+item.cantidad;
+  console.log(ingresos);
   });
 
-$("#ingresosMes").append("<h3>Saldo:"+ ingresos+ "€ </h3>");
 }
 PaginaPrincipal.initGastos = function () {
     var mes=meses[mesActual]
@@ -81,8 +80,7 @@ PaginaPrincipal.datosGastosSucces = function (data){
 }
 PaginaPrincipal.GastosGrafico = function () {
     $("#grafico").highcharts({ 
-      colors:['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
-      '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],  
+      colors: ["#7cb5ec", "#f7a35c"],  
     chart: {
       plotBackgroundColor: null,
       plotBorderWidth: null,
@@ -116,16 +114,7 @@ PaginaPrincipal.GastosGrafico = function () {
       data: [
         { name: 'Ocio', y: gastoPorCategoria.Ocio? gastoPorCategoria.Ocio : 0 },
         { name: 'Facturas', y: gastoPorCategoria.Facturas? gastoPorCategoria.Facturas : 0 },
-        { name: 'Casa', y:gastoPorCategoria.Casa? gastoPorCategoria.Casa : 0},
-        { name: 'Transporte', y: gastoPorCategoria.Transporte? gastoPorCategoria.Transporte : 0 },
-        { name: 'Salud', y: gastoPorCategoria.Salud? gastoPorCategoria.Salud : 0 },
-        { name: 'Restaurantes', y:gastoPorCategoria.Restaurantes? gastoPorCategoria.Restaurantes : 0},
-        { name: 'Otros', y: gastoPorCategoria.Otros? gastoPorCategoria.Otros : 0 },
-        { name: 'Coche', y: gastoPorCategoria.Coche? gastoPorCategoria.Coche : 0 },
-        { name: 'Supermercado', y:gastoPorCategoria.Supermercado? gastoPorCategoria.Supermercado : 0},
-        { name: 'Ropa', y:gastoPorCategoria.Ropa? gastoPorCategoria.Ropa : 0},
-
-
+        { name: 'Casa', y:gastoPorCategoria.Casa? gastoPorCategoria.Casa : 0}
       ]
     }]
   });
@@ -133,9 +122,9 @@ PaginaPrincipal.GastosGrafico = function () {
 PaginaPrincipal.GastosDatatable = function () {
     tablaGastos = $("#gastosMes").DataTable({
         "data": gastosArray,
-        "paging": true,
+        "paging": false,
         "ordering": false,
-        "iDisplayLength": 5,
+        "iDisplayLength": 20,
         "bLengthChange": false,
         "pagingType": "simple",
         "bfilter": false,
@@ -158,90 +147,27 @@ PaginaPrincipal.GastosDatatable = function () {
             { "sWidth": "32%" },
             { "sWidth": "32%" },
         ],
-        "footerCallback": function ( row, data, start, end, display ) {
-          var api = this.api(), data;
-
-          // Remove the formatting to get integer data for summation
-          var intVal = function ( i ) {
-              return typeof i === 'string' ?
-                  i.replace(/[\$,]/g, '')*1 :
-                  typeof i === 'number' ?
-                      i : 0;
-          };
-
-          // Total over all pages
-          total = api
-              .column(2)
-              .data()
-              .reduce( function (a, b) {
-                  return intVal(a) + intVal(b);
-              }, 0 );
-
-          // Total over this page
-          pageTotal = api
-              .column( 2, { page: 'current'} )
-              .data()
-              .reduce( function (a, b) {
-                  return intVal(a) + intVal(b);
-              }, 0 );
-
-          // Update footer
-          $( api.column(2).footer() ).html(
-              pageTotal +'€ ('+ total +' € total)'
-          );
-      }
 
     });
-    $("#tituloGastsoMes").append(total+"€");
 };
-PaginaPrincipal.LoadingModalGastos = function () {
+PaginaPrincipal.loadigLoadingModal = function (tipo) {
   //alert("loadig");
   var html="";
-  console.log(categorias["ingreso"]);
-  var mes=meses[mesActual]
-  $.each(categorias["gasto"], function (idx, item) {
+  console.log(categorias[tipo]);
+
+  $.each(categorias[tipo], function (idx, item) {
     html += '<option value="' + item.id + '">' + item.nombreCategoria + '</option>';
 });
 console.log(html);
-  $.ajax({url: "../html/formularioAnhadirGastos.html", success: function(result){
+  $.ajax({url: "../html/formularioAnhadirGastosIngresos.html", success: function(result){
         $("#contentBody").html(result);
-        $("#idCategoria").append(html);
-        $("#mes").val(mes).hide();
+        $("#selectCategoria").append(html);
+        $("#mes").val(mesActual).hide();
         $("#user").val(1).hide();
       $("#myModal").modal('show'); 
 
   }});
-}  
-PaginaPrincipal.LoadingModalIngresos = function () {
-  //alert("loadig");
-  var html="";
-  console.log(categorias["ingreso"]);
-  var mes=meses[mesActual]
-  $.each(categorias["ingreso"], function (idx, item) {
-    html += '<option value="' + item.id + '">' + item.nombreCategoria + '</option>';
-});
-console.log(html);
-  $.ajax({url: "../html/formularioAnhadirIngresos.html", success: function(result){
-        $("#contentBody").html(result);
-        $("#idCategoria").append(html);
-        $("#mes").val(mes).hide();
-        $("#user").val(1).hide();
-      $("#myModal").modal('show'); 
-
-  }});
-} 
-
-PaginaPrincipal.LoadingModalObjetivos = function () {
-  //alert("loadig");
-  var mes=meses[mesActual]
-  $.ajax({url: "../html/formularioAnhadirObjetivos.html", success: function(result){
-        $("#contentBody").html(result);
-        $("#mes").val(mes).hide();
-        $("#user").val(1).hide();
-      $("#myModal").modal('show'); 
-
-  }});
-}  
+}    
 $(document).ready(function () {
   PaginaPrincipal.initCategorias();  
 hoy=new Date();
@@ -253,5 +179,5 @@ $("#tabsMeses").tabs({ active: mesActual});
 
 console.log("js");
     PaginaPrincipal.initGastos(); 
-    PaginaPrincipal.initIngresos();
+   // PaginaPrincipal.initIngresos();
 });

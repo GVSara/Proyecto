@@ -18,7 +18,8 @@
 <link rel="stylesheet" type="text/css" href="../../resources/librerias/Descargas/DataTables/DataTables-1.10.20/css/jquery.dataTables.min.css">
 
 <script type="text/javascript" src="../js/paginaPrincipal.js"></script>
-
+<script type="text/javascript" src="../js/paginaObjetivos.js"></script>
+<script type="text/javascript" src="../js/objetivosPagPrincipal.js"></script>
 <header id="main-header">
 
         <a id="logo-header" href="paginaPrincipal.html">
@@ -42,19 +43,19 @@
 <section id="main-content">
     <div id='tabsMeses' class="col-md-12">
         <ul class='nav nav-tabs'>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-1' onclick='PaginaPrincipal.init()'>Enero</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-2' onclick='PaginaPrincipal.init()'>Febrero</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-3' onclick='PaginaPrincipal.init()'>Marzo</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-4' onclick='PaginaPrincipal.init()'>Abril</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-5' onclick='PaginaPrincipal.init()'>Mayo</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-6' onclick='PaginaPrincipal.init()'>Junio</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-7' onclick='PaginaPrincipal.init()'>Julio</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-8' onclick='PaginaPrincipal.init()'>Agosto</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-9' onclick='PaginaPrincipal.init()'>Septiembre</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-10' onclick='PaginaPrincipal.init()'>Octubre</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-11' onclick='PaginaPrincipal.init()'>Noviembre</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-12' onclick='PaginaPrincipal.init()'>Diciembre</a></li>
-            <li><a data-toggle="tab" href='#tabcontent' id='tab-13' onclick='PaginaPrincipal.init()'>Todos</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-1' onclick='PaginaPrincipal.initGastos()'>Enero</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-2' onclick='PaginaPrincipal.initGastos()'>Febrero</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-3' onclick='PaginaPrincipal.initGastos()'>Marzo</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-4' onclick='PaginaPrincipal.initGastos()'>Abril</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-5' onclick='PaginaPrincipal.initGastos()'>Mayo</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-6' onclick='PaginaPrincipal.initGastos()'>Junio</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-7' onclick='PaginaPrincipal.initGastos()'>Julio</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-8' onclick='PaginaPrincipal.initGastos()'>Agosto</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-9' onclick='PaginaPrincipal.initGastos()'>Septiembre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-10' onclick='PaginaPrincipal.initGastos()'>Octubre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-11' onclick='PaginaPrincipal.initGastos()'>Noviembre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-12' onclick='PaginaPrincipal.initGastos()'>Diciembre</a></li>
+            <li><a data-toggle="tab" href='#tabcontent' id='tab-13' onclick='PaginaPrincipal.initGastos()'>Todos</a></li>
         </ul>
     </div>
 </header>
@@ -62,13 +63,13 @@
         <div class=' col-md-7'>
         <!-- //DATATABLE -->
         <div class="row">
-        <div class=' col-md-5'><h4>Saldo:</h4> </div>
-        <div class=' col-md-7'>
-            <button id="añadirGasto"  class="btn btn-default" onclick="PaginaPrincipal.loadigLoadingModal('gasto')"><span class="glyphicon glyphicon-minus-sign"></span>Gastos</button>
-            <button id="añadirIngreso"  class="btn btn-default" onclick="PaginaPrincipal.loadigLoadingModal('ingreso')"><span class="glyphicon glyphicon-plus-sign"></span>Ingreso</button>
+        <div class=' col-md-5' id="ingresosMes"> </div>
+        <div id="BotonesAñadir" class=' col-md-7'>
+            <button id="añadirGasto"  class="btn btn-default" onclick="PaginaPrincipal.LoadingModalGastos()"><span class="glyphicon glyphicon-minus-sign"></span>Gastos</button>
+            <button id="añadirIngreso"  class="btn btn-default" onclick="PaginaPrincipal.LoadingModalIngresos()"><span class="glyphicon glyphicon-plus-sign"></span>Ingreso</button>
         </div></div>
         <div class="row">
-        <h3>Tus Gastos</h3>   
+        <h3 id="tituloGastsoMes">Tus Gastos:</h3>   
         <table id='gastosMes' class='table table-hover'>
                 <thead>
                     <th class='wpTableHeader'>Categoría</th>
@@ -76,13 +77,24 @@
                     <th class='wpTableHeader'>€</th>
                 </thead>
                 <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2" style="text-align:right">Total:</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
         </div></div>
         <div class='col-md-5'>
             <div>
-                <h3>Objetivos<span class="glyphicon glyphicon-plus" style='float: right;'></span></h3>
+                <h3>Objetivos<span class="glyphicon glyphicon-plus" style='float: right;' onclick="PaginaPrincipal.LoadingModalObjetivos()"></span>
+                    <a class="glyphicon glyphicon-eye-open" style='float: right;' href="paginaObjetivos.html"></a>
+                </h3>
             </div>
             <!-- //OBJETIVO -->
+            <div id="divObjetivos">
+                
+            </div>
         </div>
     </div>
     <div class='row'>

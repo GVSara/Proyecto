@@ -7,55 +7,54 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // incluir os ficheiros de base de datos
 include_once '../configuracion/baseDatos.php';
-include_once '../objetos/gastos.php';
+include_once '../objetos/ingresos.php';
  
 // instanciar a base de datos e o obxecto gasto
 $baseDatos = new BaseDatos();
 $db = $baseDatos->getConexion();
  
 // inicializar o obxecto gasto
-$gastos = new Gastos($db);
+$Ingresos = new Ingresos($db);
  
  $metodo = $_SERVER['REQUEST_METHOD']; 
  
 if ('GET' === $metodo) {
-    $id=$gastos->id= $_GET["id"];
-    $mes=$gastos->mes= $_GET["mes"];
-    $anho=$gastos->anho= $_GET["anho"];
-    $stmt = $gastos->leerGastos();
+    $id=$Ingresos->id= $_GET["id"];
+    $anho=$Ingresos->anho= $_GET["anho"];
+    $stmt = $Ingresos->leerIngresosParaObjetivos();
     $resultado=$stmt->get_result();
     $num=$resultado->num_rows;
 }
 
  if($num>0){
-    // array de gastos
-    $gastos_arr=array();
-    $gastos_arr["records"]=array();
+    // array de Ingresos
+    $ingresos_arr=array();
+    $ingresos_arr["records"]=array();
     while ($item=$resultado->fetch_assoc()){
-        $item_gasto=array(
-            "nombreCategoria"=> $item["nombreCategoria"],
-            "descripcion" => utf8_decode($item["descripcion"]),
+        $item_ingreso=array(
             "cantidad" => $item["cantidad"],
+            "anho" => $item["anho"],
+            "mes" => $item["mes"],
         );
-        array_push($gastos_arr["records"],$item_gasto);
+        array_push($ingresos_arr["records"],$item_ingreso);
     }
    // var_dump($item_gasto["descripcion"]);
 
  
     http_response_code(200);
-    echo json_encode($gastos_arr,JSON_PRETTY_PRINT);
+    echo json_encode($ingresos_arr,JSON_PRETTY_PRINT);
 }
 
 else{
 
     http_response_code(404);
     echo json_encode(
-        array("message" => "Non se atoparon gastos.")
+        array("message" => "Non se atoparon Ingresos.")
     );
 } 
 
  try{
-   $gastos->leerGastos();
+   $Ingresos->leerIngresosParaObjetivos();
 
 }catch(Exception $err){
     echo "error". $err;

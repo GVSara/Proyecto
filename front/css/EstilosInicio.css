@@ -38,7 +38,7 @@ img {
 	background: #333;
 	color: white;
 	height: 80px;
-	
+	z-index:2;
 	width: 100%;
 	left: 0;
 	top: 0;
@@ -80,6 +80,7 @@ img {
  */
 nav {
 	float: right;
+	z-index:2;
 }
 	nav ul {
 		margin: 0;
@@ -115,6 +116,7 @@ nav {
 	background: white;
     width: 100%;
 	margin-top: 80px;
+	z-index:2;
 	/* max-width: 800px;
 	margin: 20px auto;
 	box-shadow: 0 0 10px rgba(0,0,0,.1); */
@@ -150,6 +152,10 @@ nav {
 	margin-top: 15px;
 	width: 97%;
 }
+#BotonesAñadir{
+	text-align: center;
+    margin-top: 5px;
+}
 #añadirGasto{
 	color: red;
   	border: 2px solid red; 
@@ -159,6 +165,7 @@ nav {
 	color: green;
   	border: 2px solid green; 
 }
+
 /************
 //-----------------------------
 // PIE PÁGINA

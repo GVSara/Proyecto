@@ -7,28 +7,28 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // incluir os ficheiros de base de datos
 include_once '../configuracion/baseDatos.php';
-include_once '../objetos/gastos.php';
+include_once '../objetos/ingresos.php';
  
 // instanciar a base de datos e o obxecto gasto
 $baseDatos = new BaseDatos();
 $db = $baseDatos->getConexion();
  
 // inicializar o obxecto gasto
-$gastos = new Gastos($db);
+$Ingresos = new Ingresos($db);
  
  $metodo = $_SERVER['REQUEST_METHOD']; 
  
 if ('GET' === $metodo) {
-    $id=$gastos->id= $_GET["id"];
-    $mes=$gastos->mes= $_GET["mes"];
-    $anho=$gastos->anho= $_GET["anho"];
-    $stmt = $gastos->leerGastos();
+    $id=$Ingresos->id= $_GET["id"];
+    $mes=$Ingresos->mes= $_GET["mes"];
+    $anho=$Ingresos->anho= $_GET["anho"];
+    $stmt = $Ingresos->leerIngresos();
     $resultado=$stmt->get_result();
     $num=$resultado->num_rows;
 }
 
  if($num>0){
-    // array de gastos
+    // array de Ingresos
     $gastos_arr=array();
     $gastos_arr["records"]=array();
     while ($item=$resultado->fetch_assoc()){
@@ -50,12 +50,12 @@ else{
 
     http_response_code(404);
     echo json_encode(
-        array("message" => "Non se atoparon gastos.")
+        array("message" => "Non se atoparon Ingresos.")
     );
 } 
 
  try{
-   $gastos->leerGastos();
+   $Ingresos->leerIngresos();
 
 }catch(Exception $err){
     echo "error". $err;
