@@ -1,21 +1,24 @@
-var PaginaPrincipal = PaginaPrincipal || {};
+var PaginaObjetivos = PaginaObjetivos || {};
 var objetivosArray = [];
 //TRaer OBJETIVOS
-PaginaPrincipal.initObjetivos = function () {
+PaginaObjetivos.initObjetivos = function () {
 
-    var url = "../../php/objetivos/leerObjetivos.php?id=1";
+    var url = "../../php/objetivos/leerObjetivos.php?id=2";
     $.ajax({
       method: "GET", url, 
-      success: PaginaPrincipal.datosObjetivosSucces
+      success: PaginaObjetivos.datosObjetivosSucces,
+      error:PaginaObjetivos.ObjetivosDatatable,
+      
+      
     })
   };
-  PaginaPrincipal.datosObjetivosSucces = function (data){
+  PaginaObjetivos.datosObjetivosSucces = function (data){
   console.log(data);
   $.each(data.records, function (idx, item) {
       var objetivo=item.objetivo;
-      var porcentaje=item.porcentaje;
-      var cantidad=item.cantidad;
-      var ahorrado=item.ahorrado;
+      var porcentaje="<span>"+item.porcentaje+"%</span>";;
+      var cantidad="<span>"+item.cantidad+"€</span>";
+      var ahorrado="<span>"+item.ahorrado+" €</span>";;
       var estado=item.estado;
       var mes=item.mes;
       var anho=item.anho;
@@ -25,18 +28,18 @@ PaginaPrincipal.initObjetivos = function () {
       objetivosArray.push([objetivo,porcentaje,cantidad,ahorrado,estado,mes,anho]);
     });
     console.log(objetivosArray);
-    PaginaPrincipal.ObjetivosDatatable();
+    PaginaObjetivos.ObjetivosDatatable();
   }
-  PaginaPrincipal.ObjetivosDatatable = function () {
+  PaginaObjetivos.ObjetivosDatatable = function () {
     tablaObjetivos = $("#tablaObjetivos").DataTable({
         "data": objetivosArray,
         "paging": true,
-        "ordering": false,
+        "ordering": true,
         "iDisplayLength": 20,
         "bLengthChange": false,
         "pagingType": "simple",
         "bfilter": false,
-        "info": false,
+        "info": true,
         "autoWidth": false,
         "responsive": false,
         "searching": false,
@@ -47,7 +50,7 @@ PaginaPrincipal.initObjetivos = function () {
             },
             "sInfo": "_START_ - _END_ (_TOTAL_) ",
             "sInfoEmpty": "0 - _END_ (_TOTAL_) ",
-            "zeroRecords": "No hay movimientos todavía",
+            "zeroRecords": "No hay objetivos todavía",
             "search": "búsqueda",
         },
         "aoColumns": [
@@ -65,6 +68,6 @@ PaginaPrincipal.initObjetivos = function () {
 
 };
 $(document).ready(function () {
-    PaginaPrincipal.initObjetivos();  
+    PaginaObjetivos.initObjetivos();  
 
   });

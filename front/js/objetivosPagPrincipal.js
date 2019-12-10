@@ -5,25 +5,30 @@ var mesActual;
 var yearObjetivo;
 var porcentaje;
 var mes
+var ahorrado
 var cantidadObj;
 var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 var mesesNumero = {"Enero":0, "Febrero":1, "Marzo":2, "Abril":3, "Mayo":4, "Junio":5, "Julio":6, "Agosto":7, "Septiembre":8, "Octubre":9, "Noviembre":10, "Diciembre":11};
 //TRaer OBJETIVOS
 ObjetivosPaginaPrincipal.initObjetivos = function () {
 
-    var url = "../../php/objetivos/leerObjetivos.php?id=1&estado=Pendiente";
+    var url = "../../php/objetivos/leerObjetivosPagPrincipal.php?id=1&estado=Pendiente";
     $.ajax({
       method: "GET", url, 
-      success: ObjetivosPaginaPrincipal.datosObjetivosSucces
+      success: ObjetivosPaginaPrincipal.datosObjetivosSucces,
+      error: function(result) {
+        $("#divDatosObjetivos").html("No se han encontrado Objetivos");
+    }
     })
   };
   ObjetivosPaginaPrincipal.datosObjetivosSucces = function (data){
   console.log(data);
   $.each(data.records, function (idx, item) {
     var objetivo=item.objetivo;
+    $("#nombreObjetivo").html(objetivo);
       porcentaje=item.porcentaje;
       var cantidad=item.cantidad;
-      var ahorrado=item.ahorrado;
+      ahorrado=item.ahorrado;
       var estado=item.estado;
       mesObjetivo=item.mes;
       yearObjetivo=item.anho;
@@ -65,13 +70,16 @@ ObjetivosPaginaPrincipal.initGastos = function () {
   var url = "../../php/gastos/leerGastosParaObjetivos.php?id=1&anho="+yearObjetivo;
   $.ajax({
     method: "GET", url, 
-    success: ObjetivosPaginaPrincipal.datosGastosSucces
+    success: ObjetivosPaginaPrincipal.datosGastosSucces,
+    error: function(result) {
+      $("#divDatosObjetivos").html("No se han encontrado Objetivos");
+  }
   })
 };
 ObjetivosPaginaPrincipal.datosGastosSucces = function (data){
   console.log("gastos Objetivos");
 $.each(data.records, function (idx, item) {
-
+  $("#glyphiconAñadirObjetivo").hide();
   if (typeof (gastosParaObjetivos[item.anho]) == "undefined") {
     gastosParaObjetivos[item.anho]={};
     gastosParaObjetivos[item.anho][item.mes]=[];
@@ -120,9 +128,20 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
   if (totalObtenidoObjeto<0){
     totalObtenidoObjeto=0;
   }
-  $("#divObjetivos").append("<h3 style='text-align:center'>Ahorrado:"+totalObtenidoObjeto+"€</h3>");
+  $("#divDatosObjetivos").append("<h2 style='text-align:center'>"+totalObtenidoObjeto+"€</h2>");
   console.log("Ahorrado:"+totalObtenidoObjeto);
+  if(ahorrado!=totalObtenidoObjeto){
+
+  }
 }
+// ObjetivosPaginaPrincipal.initObjetivos = function () {
+
+//   var url = "../../php/objetivos/actualizarObjetivos.php?idObjetivo=idObjetivo";
+//   $.ajax({
+//     method: "GET", url, 
+//     success: ObjetivosPaginaPrincipal.datosObjetivosSucces
+//   })
+// };
 $(document).ready(function () {
   ObjetivosPaginaPrincipal.initObjetivos();
 });

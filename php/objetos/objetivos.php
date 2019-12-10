@@ -52,5 +52,19 @@ class Objetivos{
 
         $stmt->close();
    }
+   function leerObjetivoPagPrincipal(){
+    try{
+        $stmt =$this->conn->prepare("SELECT objetivo, porcentaje, cantidad, ahorrado, estado, mes, anho, usuarios_idusuario FROM objetivos WHERE usuarios_idusuario = ? AND estado = ?");
+        $stmt->bind_param('is', $this->id, $this->estado); 
+
+    }catch(Exception $err){
+        echo $err;
+    }
+    $stmt->execute();
+
+        return $stmt;
+
+    $stmt->close();
+}
 }
 ?>

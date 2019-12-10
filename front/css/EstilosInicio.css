@@ -114,39 +114,55 @@ nav {
 ************/
 #main-content {
 	background: white;
-    width: 100%;
-	margin-top: 80px;
-	z-index:2;
-	/* max-width: 800px;
+	width: 100%;
+	/*padding-top: 0px;
+	 max-width: 80px;
 	margin: 20px auto;
 	box-shadow: 0 0 10px rgba(0,0,0,.1); */
 }
-#tabsMeses{
+#tabsMeses{	
     font-size: initial;
-    background: silver;
+    background: #666;
 	position: fixed;
 	padding: 0;
+	z-index:2;
+	
 }
 #tabsMeses > ul{	
 	display: table;
     width: 100%;
-    table-layout: fixed;
+	table-layout: fixed;
+	padding: 0;
 }
 #tabsMeses> ul > li{
 	float: none;
 	display: table-cell;
 	width:100%;
+	background:silver;
+
 }
 #tabsMeses a{ 
 	color: #333;
 	text-align: center;
+	width:100%;
+
 }
-	#main-content header{
-		padding: 40px;
-	}
-	
-#divTablaObj{
-    margin-top: 55px;
+
+ a.button:hover,  a.buttonClick, .ui-state-active a:link,  .ui-state-active a:visited #tabsMeses .ui-state-active, #tabsMeses .ui-widget-content .ui-state-active, #tabsMeses .ui-widget-header .ui-state-active {
+	background-color: #ffffff;
+	border: 3px solid #ffffff;
+	color: white;
+	border-bottom: 0;
+	padding-bottom: 3px;
+}
+
+#tabsMeses.ui-tabs .ui-tabs-panel {
+	border: 0;
+}
+
+#tabcontent{
+	margin-top: 50px;
+	z-index:1;
 }
 #gastosMes{
 	margin-top: 15px;
@@ -154,18 +170,36 @@ nav {
 }
 #BotonesAñadir{
 	text-align: center;
-    margin-top: 5px;
+    margin-top: 12px;
 }
 #añadirGasto{
 	color: red;
   	border: 2px solid red; 
 }
-
+.red{
+	background-color: rgba(255, 0, 0, 0.199);
+}
+.green{
+	background-color: rgba(0, 255, 0, 0.199);
+}
 #añadirIngreso{
 	color: green;
   	border: 2px solid green; 
 }
+#divObjetivos{
+    float: right;
+    padding: 0px;
+}
+#panelTabla{
+	margin-left: 5px;
 
+}
+#glyphiconAñadirObjetivo{
+	float: right;
+}
+.glyphicon{
+	margin-left: 5px;
+}
 /************
 //-----------------------------
 // PIE PÁGINA

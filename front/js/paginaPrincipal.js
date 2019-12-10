@@ -1,11 +1,12 @@
 var PaginaPrincipal = PaginaPrincipal || {};
-var gastosArray = [];
+var datosTableArray = [];
 var categorias = {};
 var gastoPorCategoria = {};
 var mesActual;
 var year;
 var ingresos=0;
-var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",""];
+//CATEGORIAS
 PaginaPrincipal.initCategorias = function () {
   var url = "../../php/categorias/leerCategorias.php"
   $.ajax({
@@ -28,43 +29,73 @@ PaginaPrincipal.datosSuccesCategorias = function (data){
     }
     //console.log(categoriasArray);
     });
-}  
-PaginaPrincipal.initIngresos = function () {
-   gastosArray = [];
+}
+
+//INGRESOS
+
+PaginaPrincipal.initIngresos = function (mesEnviado) {
+  console.log(mesEnviado);
+  var mes="";
+  if (typeof mesEnviado === "undefined"){
+    mes=meses[mesActual];
+    console.log("hola")
+    
+  }else{
+    mes=meses[mesEnviado];
+    
+  }
+  console.log(mes);
+   ingresos=0;
+   datosTableArray = [];
    gastoPorCategoria = {};
-  var mes=meses[mesActual]
+  
   url=""
   var url = "../../php/ingresos/leerIngresos.php?id=1&mes="+ mes +"&anho="+year;
   $.ajax({
     method: "GET", url, 
-    success: PaginaPrincipal.datosIngresosSucces
+    success: PaginaPrincipal.datosIngresosSucces,
+    error: PaginaPrincipal.datosIngresosSucces,
+    
   })
+  PaginaPrincipal.initGastos(mes);
 };
 PaginaPrincipal.datosIngresosSucces = function (data){
+  
 console.log(data);
 $.each(data.records, function (idx, item) {
+  var categoria=item.nombreCategoria;
+    var descripcion=item.descripcion;
+    var cantidad=parseFloat(item.cantidad);
+    var tipo ="ingreso";
   ingresos=ingresos+parseFloat(item.cantidad);
-  console.log("ingresos: "+ingresos);
+  datosTableArray.push([categoria,descripcion,cantidad,tipo]);
   });
 
-$("#ingresosMes").append("<h3>Saldo:"+ ingresos+ "€ </h3>");
+$("#ingresosMes").html("<h3>Saldo:"+ ingresos+ "€ </h3>");
+
 }
-PaginaPrincipal.initGastos = function () {
-    var mes=meses[mesActual]
+
+//GASTOS
+PaginaPrincipal.initGastos = function (mes) {
+  
     url=""
     var url = "../../php/gastos/leerGastos.php?id=1&mes="+ mes +"&anho="+year;
     $.ajax({
       method: "GET", url, 
-      success: PaginaPrincipal.datosGastosSucces
+      success: PaginaPrincipal.datosGastosSucces,
+      error:PaginaPrincipal.datosGastosSucces,
     })
 };
 PaginaPrincipal.datosGastosSucces = function (data){
-
+  if ($.fn.DataTable.isDataTable('#gastosMes')) {
+    tablaGastos.destroy();
+    datosTableArray = [];
+}
   $.each(data.records, function (idx, item) {
     var categoria=item.nombreCategoria;
     var descripcion=item.descripcion;
     var cantidad=parseFloat(item.cantidad);
-
+    var tipo ="gasto";
 
     if (typeof (gastoPorCategoria[categoria]) == "undefined") {
       gastoPorCategoria[categoria] = cantidad;
@@ -72,8 +103,8 @@ PaginaPrincipal.datosGastosSucces = function (data){
     }else{
       gastoPorCategoria[categoria] += cantidad;
     }
-    gastosArray.push([categoria,descripcion,cantidad]);
-    //console.log(gastosArray);
+    datosTableArray.push([categoria,descripcion,cantidad,tipo]);
+    //console.log(datosTableArray);
     });
     console.log(gastoPorCategoria);
     PaginaPrincipal.GastosDatatable();
@@ -102,7 +133,6 @@ PaginaPrincipal.GastosGrafico = function () {
         dataLabels: {
           enabled: true,
           format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-          distance: -50,
           filter: {
             property: 'percentage',
             operator: '>',
@@ -132,17 +162,24 @@ PaginaPrincipal.GastosGrafico = function () {
 };  
 PaginaPrincipal.GastosDatatable = function () {
     tablaGastos = $("#gastosMes").DataTable({
-        "data": gastosArray,
+        "data": datosTableArray,
         "paging": true,
-        "ordering": false,
+        "ordering": true,
         "iDisplayLength": 5,
         "bLengthChange": false,
         "pagingType": "simple",
         "bfilter": false,
-        "info": false,
+        "info": true,
         "autoWidth": false,
         "responsive": false,
-        "searching": false,
+        "searching": true,
+        "createdRow": function( row, data, dataIndex){
+          if( data[3] == "gasto"){
+              $(row).find('td:eq(2)').addClass('red');
+          }else{
+            $(row).find('td:eq(2)').addClass('green');
+          }
+        },
         "language": {
             "paginate": {
                 "next": "<span class='glyphicon glyphicon-chevron-right' title='Siguiente'/>",
@@ -150,13 +187,21 @@ PaginaPrincipal.GastosDatatable = function () {
             },
             "sInfo": "_START_ - _END_ (_TOTAL_) ",
             "sInfoEmpty": "0 - _END_ (_TOTAL_) ",
-            "zeroRecords": "No hay movimientos todavía",
-            "search": "búsqueda",
+            "zeroRecords": "No hay gastos todavía",
+            "search": "",
+            "searchPlaceholder": "Búsqueda",
         },
+        "columnDefs": [
+          {
+              "targets": [ 3 ],
+              "visible": false,
+          }
+        ],
         "aoColumns": [
             { "sWidth": "32%" },
             { "sWidth": "32%" },
             { "sWidth": "32%" },
+            { "sWidth": "0%" },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
           var api = this.api(), data;
@@ -177,7 +222,7 @@ PaginaPrincipal.GastosDatatable = function () {
                   return intVal(a) + intVal(b);
               }, 0 );
 
-          // Total over this page
+         /* // Total over this page
           pageTotal = api
               .column( 2, { page: 'current'} )
               .data()
@@ -188,12 +233,15 @@ PaginaPrincipal.GastosDatatable = function () {
           // Update footer
           $( api.column(2).footer() ).html(
               pageTotal +'€ ('+ total +' € total)'
-          );
+          );*/
       }
 
     });
-    $("#tituloGastsoMes").append(total+"€");
+    $("#tituloGastsoMes").html("<h3>Gastos:"+total+"€</h3>");
 };
+
+//MODALES
+
 PaginaPrincipal.LoadingModalGastos = function () {
   //alert("loadig");
   var html="";
@@ -205,6 +253,7 @@ PaginaPrincipal.LoadingModalGastos = function () {
 console.log(html);
   $.ajax({url: "../html/formularioAnhadirGastos.html", success: function(result){
         $("#contentBody").html(result);
+        $(".modal-title").html("Añade tu nuevo gasto");
         $("#idCategoria").append(html);
         $("#mes").val(mes).hide();
         $("#user").val(1).hide();
@@ -223,6 +272,7 @@ PaginaPrincipal.LoadingModalIngresos = function () {
 console.log(html);
   $.ajax({url: "../html/formularioAnhadirIngresos.html", success: function(result){
         $("#contentBody").html(result);
+        $(".modal-title").html("Añade tu nuevo ingreso");
         $("#idCategoria").append(html);
         $("#mes").val(mes).hide();
         $("#user").val(1).hide();
@@ -236,22 +286,24 @@ PaginaPrincipal.LoadingModalObjetivos = function () {
   var mes=meses[mesActual]
   $.ajax({url: "../html/formularioAnhadirObjetivos.html", success: function(result){
         $("#contentBody").html(result);
+        $(".modal-title").html("Añade tu objetivo");
         $("#mes").val(mes).hide();
         $("#user").val(1).hide();
       $("#myModal").modal('show'); 
 
   }});
 }  
+
 $(document).ready(function () {
   PaginaPrincipal.initCategorias();  
 hoy=new Date();
 mesActual=hoy.getMonth();
 year = hoy.getFullYear();
 console.log(mesActual);
-$("#tabsMeses").tabs({ active: mesActual});
-
+//$("#tabsMeses").tabs({ active: mesActual});
+$("#tabsMeses li").eq(mesActual).addClass('active');
 
 console.log("js");
-    PaginaPrincipal.initGastos(); 
+     
     PaginaPrincipal.initIngresos();
 });
