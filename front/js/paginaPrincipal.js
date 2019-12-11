@@ -5,7 +5,7 @@ var gastoPorCategoria = {};
 var mesActual;
 var year;
 var ingresos=0;
-var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",""];
+var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre","Todos"];
 //CATEGORIAS
 PaginaPrincipal.initCategorias = function () {
   var url = "../../php/categorias/leerCategorias.php"
@@ -36,21 +36,23 @@ PaginaPrincipal.datosSuccesCategorias = function (data){
 PaginaPrincipal.initIngresos = function (mesEnviado) {
   console.log(mesEnviado);
   var mes="";
+  var todos=false;
   if (typeof mesEnviado === "undefined"){
-    mes=meses[mesActual];
-    console.log("hola")
-    
+    mes=meses[mesActual]; 
   }else{
     mes=meses[mesEnviado];
-    
   }
-  console.log(mes);
+  console.log("mes: "+mes);
    ingresos=0;
    datosTableArray = [];
    gastoPorCategoria = {};
   
-  url=""
-  var url = "../../php/ingresos/leerIngresos.php?id=1&mes="+ mes +"&anho="+year;
+   var url=""
+   if(mes=="Todos"){
+    url = "../../php/ingresos/leerIngresosAnho.php?id="+ userId +"&anho="+year;
+   }else{
+    url = "../../php/ingresos/leerIngresos.php?id="+ userId +"&mes="+ mes +"&anho="+year;
+  }
   $.ajax({
     method: "GET", url, 
     success: PaginaPrincipal.datosIngresosSucces,
@@ -77,9 +79,13 @@ $("#ingresosMes").html("<h3>Saldo:"+ ingresos+ "€ </h3>");
 
 //GASTOS
 PaginaPrincipal.initGastos = function (mes) {
-  
-    url=""
-    var url = "../../php/gastos/leerGastos.php?id=1&mes="+ mes +"&anho="+year;
+  console.log(mes);
+   var url=""
+   if (mes ==="Todos"){
+      url = "../../php/gastos/leerGastosAnho.php?id="+ userId +"&anho="+year;
+     }else{
+     url = "../../php/gastos/leerGastos.php?id="+ userId +"&mes="+ mes +"&anho="+year;
+     }
     $.ajax({
       method: "GET", url, 
       success: PaginaPrincipal.datosGastosSucces,
@@ -110,6 +116,9 @@ PaginaPrincipal.datosGastosSucces = function (data){
     PaginaPrincipal.GastosDatatable();
     PaginaPrincipal.GastosGrafico();
 }
+
+//GRAFICO
+
 PaginaPrincipal.GastosGrafico = function () {
     $("#grafico").highcharts({ 
       colors:['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
@@ -160,6 +169,8 @@ PaginaPrincipal.GastosGrafico = function () {
     }]
   });
 };  
+//TABLA
+
 PaginaPrincipal.GastosDatatable = function () {
     tablaGastos = $("#gastosMes").DataTable({
         "data": datosTableArray,
@@ -303,7 +314,7 @@ console.log(mesActual);
 //$("#tabsMeses").tabs({ active: mesActual});
 $("#tabsMeses li").eq(mesActual).addClass('active');
 
-console.log("js");
+console.log(userId);
      
     PaginaPrincipal.initIngresos();
 });

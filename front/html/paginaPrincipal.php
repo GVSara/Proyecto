@@ -1,3 +1,12 @@
+<?php
+session_start();
+if(!isset($_SESSION["userId"])) {
+    header("Location: ../../front/html/inicioSesion.html");
+}else{
+    $session_value=$_SESSION["userId"];
+    $nombre=$_SESSION["nombre"];
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <meta charset="UTF-8">
@@ -23,21 +32,23 @@
     href="../../resources/librerias/Descargas/DataTables/Bootstrap-3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
     href="../../resources/librerias/Descargas/DataTables/DataTables-1.10.20/css/jquery.dataTables.min.css">
-
+    <script type="text/javascript">
+    var userId='<?php echo $session_value;?>';
+    </script>
 <script type="text/javascript" src="../js/paginaPrincipal.js"></script>
 <script type="text/javascript" src="../js/paginaObjetivos.js"></script>
 <script type="text/javascript" src="../js/objetivosPagPrincipal.js"></script>
 <header id="main-header">
 
-    <a id="logo-header" href="paginaPrincipal.html">
+    <a id="logo-header" href="paginaPrincipal.php">
         <span class="site-name">Kostuak</span>
         <span class="site-desc">Visualiza tus gastos</span>
     </a> <!-- / #logo-header -->
 
     <nav>
         <ul>
-            <li><a href="inicioSesion.html">Iniciar sesión</a></li>
-            <li><a href="registro.html">Regístrate</a></li>
+            <li><?php echo $nombre;?></li>
+            <li><a href="../php/LogOut.php">Cerrar Sesión</a></li>
         </ul>
     </nav><!-- / nav -->
 
@@ -66,7 +77,7 @@
         </li>
         <li><a data-toggle="tab" href='#tabcontent' id='tab-12' onclick='PaginaPrincipal.initIngresos(11)'>Diciembre</a>
         </li>
-        <li><a data-toggle="tab" href='#tabcontent' id='tab-13' onclick='PaginaPrincipal.initIngresos(13)'>Todos</a>
+        <li><a data-toggle="tab" href='#tabcontent' id='tab-13' onclick='PaginaPrincipal.initIngresos(12)'>Todos</a>
         </li>
     </ul>
 </div> 
@@ -89,7 +100,7 @@
         <div class=' col-md-7'>
         <div id="panelTabla" class='panel panel-default'>
             <div class="panel-heading">
-                <h3 class="panel-title">Tabla de gastos</h3>
+                <h3 class="panel-title">Tabla de gastos e ingresos</h3>
             </div>
             <div class="panel-body">
                 <table id='gastosMes' class='table table-hover'>

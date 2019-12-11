@@ -30,7 +30,7 @@ $metodo = $_SERVER['REQUEST_METHOD'];
 if($usuario->crear()){
     
     //http_response_code(201);
-    header('Location: ../../front/html/paginaPrincipal.html');
+    header('Location: ../../front/html/inicioSesion.html');
 
 }else{
 

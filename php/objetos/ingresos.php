@@ -34,6 +34,20 @@ class Ingresos{
 
         $stmt->close();
    } 
+   function leerIngresosAnho(){
+    try{
+        $stmt =$this->conn->prepare("SELECT I.descripcion, I.cantidad, C.nombreCategoria FROM Ingresos I INNER JOIN categorias C ON I.categorias_idcategorias = C.idcategorias WHERE usuarios_idusuario = ?  AND anho = ?");
+        $stmt->bind_param('ii', $this->id, $this->anho); 
+
+    }catch(Exception $err){
+        echo $err;
+    }
+    $stmt->execute();
+
+        return $stmt;
+
+    $stmt->close();
+} 
    function leerIngresosParaObjetivos(){
     try{
         $stmt =$this->conn->prepare("SELECT cantidad, anho, mes FROM  ". $this->tabla ." WHERE usuarios_idusuario = ? AND anho >= ?");

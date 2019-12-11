@@ -13,15 +13,12 @@ $usuario = new Usuario($db);
 
 $metodo = $_SERVER['REQUEST_METHOD']; 
         if ('GET' === $metodo) {
-                $user=$usuario->user= $_GET['email'];
+                $user=$usuario->email= $_GET['email'];
                 $password=$usuario->password= $_GET['password'];
                 $stmt = $usuario->leerUsuario();
                 $resultado=$stmt->get_result();
                 $num=$resultado->num_rows;
         }        
-        var_dump($_GET['email']);
-        var_dump($_GET['password']);
-        var_dump($stmt);
 
         if($num>0){
             // array de gastos
@@ -30,14 +27,20 @@ $metodo = $_SERVER['REQUEST_METHOD'];
             while ($item=$resultado->fetch_assoc()){
                 $item_usuario=array(
                     "nombre"=> $item["nombre"],
+                    "idusuario"=> $item["idusuario"],
                 );
                 array_push($usuario_arr["records"],$item_usuario);
             }
            // var_dump($item_gasto["descripcion"]);
-        
+           session_start();
+           $_SESSION['userId'] = $item_usuario["idusuario"];
+           $_SESSION['nombre'] = $item_usuario["nombre"];
+           
+
          
             http_response_code(200);
-            echo json_encode($usuario_arr,JSON_PRETTY_PRINT);
+            header('Location: ../../front/html/paginaPrincipal.php');
+            //echo json_encode($usuario_arr,JSON_PRETTY_PRINT);
         }
         
         else{

@@ -21,7 +21,7 @@ class Usuario{
 
     function leerUsuario(){
         try{
-            $stmt =$this->conn->prepare("SELECT nombre FROM ". $this->taboa ." WHERE email = ? AND password = ?");
+            $stmt =$this->conn->prepare("SELECT idusuario, nombre FROM ". $this->taboa ." WHERE email = ? AND password = ?");
             $stmt->bind_param('ss', $this->email, $this->password); 
 
         }catch(Exception $err){
