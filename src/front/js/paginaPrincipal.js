@@ -248,7 +248,7 @@ PaginaPrincipal.GastosDatatable = function () {
       }
 
     });
-    $("#tituloGastsoMes").html("<h3>Gastos:"+total+"€</h3>");
+    $("#tituloGastsoMes").html("<h3>Gastos:"+parseFloat(total-ingresos).toFixed(2)+"€</h3>");
 };
 
 //MODALES
@@ -267,7 +267,7 @@ console.log(html);
         $(".modal-title").html("Añade tu nuevo gasto");
         $("#idCategoria").append(html);
         $("#mes").val(mes).hide();
-        $("#user").val(1).hide();
+        $("#user").val(userId).hide();
       $("#myModal").modal('show'); 
 
   }});
@@ -286,7 +286,7 @@ console.log(html);
         $(".modal-title").html("Añade tu nuevo ingreso");
         $("#idCategoria").append(html);
         $("#mes").val(mes).hide();
-        $("#user").val(1).hide();
+        $("#user").val(userId).hide();
       $("#myModal").modal('show'); 
 
   }});
@@ -299,7 +299,7 @@ PaginaPrincipal.LoadingModalObjetivos = function () {
         $("#contentBody").html(result);
         $(".modal-title").html("Añade tu objetivo");
         $("#mes").val(mes).hide();
-        $("#user").val(1).hide();
+        $("#user").val(userId).hide();
       $("#myModal").modal('show'); 
 
   }});

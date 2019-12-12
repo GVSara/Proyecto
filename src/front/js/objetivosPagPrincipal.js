@@ -116,7 +116,7 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
       ingresosTotal +=parseFloat(ingresosParaObjetivos[yearObjetivo][meses[mesNumeroObj]])
       gastosTotal +=parseFloat(gastosParaObjetivos[yearObjetivo][meses[mesNumeroObj]])
     }
-    console.log("Total:" + ingresosTotal);
+    console.log("Total:" + parseFloat(ingresosTotal).toFixed(2));
   }else{
     var mesFor=11;
     for(yearObjetivo;yearObjetivo<=year;yearObjetivo++){
@@ -134,9 +134,9 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
     totalObtenidoObjeto=0;
   }
   if (totalObtenidoObjeto >=  cantidad){
-    $("#divDatosObjetivos").html("<h2 style='text-align:center'>"+totalObtenidoObjeto+"€</h2><br><h2 style='text-align:center'>Felicidades, has cumplido tu objetivo</h2>");
+    $("#divDatosObjetivos").html("<h2 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h2><br><h2 style='text-align:center'>Felicidades, has cumplido tu objetivo</h2>");
   }else{
-    $("#divDatosObjetivos").html("<h2 style='text-align:center'>"+totalObtenidoObjeto+"€</h2>");
+    $("#divDatosObjetivos").html("<h2 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h2>");
   }
   console.log("Ahorrado:"+totalObtenidoObjeto);
   if(ahorrado!=totalObtenidoObjeto){

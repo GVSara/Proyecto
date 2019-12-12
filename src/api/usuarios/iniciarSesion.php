@@ -48,7 +48,7 @@ $metodo = $_SERVER['REQUEST_METHOD'];
             
             session_start();
             $_SESSION['errorInicio'] = '<div class="error">Alguno de los datos introducidos son incorrecto, intentelo nuevamente.</div>';
-            header('Location: ../../front/php/formInicioSesion.php');
+            header('Location: ../../front/php/inicioSesion.php');
         } 
            
 
