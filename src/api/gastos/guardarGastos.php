@@ -12,14 +12,6 @@ $gasto = new Gastos($db);
 
 $metodo = $_SERVER['REQUEST_METHOD']; 
         if ('POST' === $metodo) {
-        // comprobar se hai máis de 0 rexistros devoltos
-         $data = json_decode(file_get_contents('php://input'));
-        //         if (is_null($data)) {
-        //             header('HTTP/1.1 400 Bad Request');
-        //             $this->result();
-        //             return;
-        //         }
-
                 $gasto->anho = intval($year);
                 $gasto->mes = $_POST['mes'] ;
                 $gasto->descripcion = $_POST['descripcion'];
@@ -29,11 +21,11 @@ $metodo = $_SERVER['REQUEST_METHOD'];
             }
 
 
-
+$mes= $gasto->mes;
 if($gasto->crear()){
     
     //http_response_code(201);
-    header('Location: ../../front/php/paginaPrincipal.php');
+    header('Location: ../../front/php/paginaPrincipal.php?mes='.$mes);
 
 }else{
 

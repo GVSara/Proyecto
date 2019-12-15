@@ -43,7 +43,7 @@
       <input type="text" placeholder="Apellidos" name="apellidos" required><br>
 
       <label for="email"><b>Email</b></label>
-      <input type="text" placeholder="Email" name="email" required><br>
+      <input type="email" placeholder="Email" name="email" required><br>
 
       <label for="password"><b>Contraseña</b></label>
       <input type="password" placeholder="Contraseña" name="password" required><br>

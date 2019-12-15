@@ -114,7 +114,8 @@ nav {
 ************/
 #main-content {
 	background: white;
-	width: 100%;
+	width: 99%;
+	padding: 5px;
 	/*padding-top: 0px;
 	 max-width: 80px;
 	margin: 20px auto;
@@ -202,6 +203,13 @@ nav {
 }
 .glyphicon{
 	margin-left: 5px;
+}
+#divSelectCategorias{
+	margin: 45px;
+	font-size: medium;
+}
+#panelTabla .panel-body{
+	height:550px;
 }
 /************
 //-----------------------------

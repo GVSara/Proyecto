@@ -1,183 +1,114 @@
-var PaginaPrincipal = PaginaPrincipal || {};
-var gastosArray = [];
-var categorias = {};
-var gastoPorCategoria = {};
-var mesActual;
+var GraficoAnual = GraficoAnual || {};
+var seriesGrafico = [];
+var seriesGraficoMostrar=[];
 var year;
-var ingresos=0;
 var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-PaginaPrincipal.initCategorias = function () {
-  var url = "../../php/categorias/leerCategorias.php"
+var mesesPorNumero = {"Enero":0, "Febrero":1, "Marzo":2, "Abril":3, "Mayo":4, "Junio":5, "Julio":6, "Agosto":7, "Septiembre":8, "Octubre":9, "Noviembre":10, "Diciembre":11,"Todos":12};
+var coloresGrafico=["#7cb5ec", "#434348", "#90ed7d", "#f7a35c", "#8085e9", "#f15c80", "#e4d354", "#2b908f", "#f45b5b", "#91e8e1"]
+GraficoAnual.initCategorias = function () {
+  var url = "../../api/categorias/leerCategorias.php"
   $.ajax({
     method: "GET", url, 
-    success: PaginaPrincipal.datosSuccesCategorias
+    success: GraficoAnual.datosSuccesCategorias
   })
 };
-PaginaPrincipal.datosSuccesCategorias = function (data){
+GraficoAnual.datosSuccesCategorias = function (data){
   console.log(data);
+  var html='<option value="10">Todas</option>';
+  var i=0;
   $.each(data.records, function (idx, item) {
-    var idcategoria=item.idcategorias;
+    
     var nombreCategoria=item.nombreCategoria;
     var tipo= item.tipo;
-    if (typeof (categorias[tipo]) == "undefined") {
-      categorias[tipo]=[];
-    categorias[tipo].push({ "id" : idcategoria,"nombreCategoria" : nombreCategoria});
-    console.log(categorias);
-    }else{
-      categorias[tipo].push({ "id" : idcategoria,"nombreCategoria" : nombreCategoria});
+    
+     
+    if(tipo !="ingreso"){
+      //Crear array para el gráfico y el select 
+      seriesGrafico.push ({name: nombreCategoria ,data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dataLabels: { format: '{y:,.0f}' },color:coloresGrafico[i]  });
+      html += '<option value="' + i + '">' + nombreCategoria + '</option>';
+      i += 1;
     }
-    //console.log(categoriasArray);
+    $("#selectCategoria").html(html);
+    console.log(seriesGrafico);
+   
     });
+    
+    GraficoAnual.initGastos () 
 }  
-PaginaPrincipal.initIngresos = function () {
-   gastosArray = [];
-   gastoPorCategoria = {};
-  var mes=meses[mesActual]
-  url=""
-  var url = "../../api/gastos/leerIngresos.php?id=1&mes="+ mes +"&anho="+year;
+GraficoAnual.initGastos = function () {
+  var url = "../../api/gastos/leerGastosAnho.php?id="+ userId +"&anho="+year;
   $.ajax({
     method: "GET", url, 
-    success: PaginaPrincipal.datosIngresosSucces
+    success: GraficoAnual.datosGastosSucces
   })
-};
-PaginaPrincipal.datosIngresosSucces = function (data){
-console.log(data);
-$.each(data.records, function (idx, item) {
-  ingresos=ingresos+item.cantidad;
-  console.log(ingresos);
-  });
-
 }
-PaginaPrincipal.initGastos = function () {
-    var mes=meses[mesActual]
-    url=""
-    var url = "../../api/gastos/leerGastos.php?id=1&mes="+ mes +"&anho="+year;
-    $.ajax({
-      method: "GET", url, 
-      success: PaginaPrincipal.datosGastosSucces
-    })
-};
-PaginaPrincipal.datosGastosSucces = function (data){
+GraficoAnual.datosGastosSucces = function (data){
 
+  
   $.each(data.records, function (idx, item) {
     var categoria=item.nombreCategoria;
-    var descripcion=item.descripcion;
     var cantidad=parseFloat(item.cantidad);
 
-
-    if (typeof (gastoPorCategoria[categoria]) == "undefined") {
-      gastoPorCategoria[categoria] = cantidad;
-    console.log("categorias");
-    }else{
-      gastoPorCategoria[categoria] += cantidad;
-    }
-    gastosArray.push([categoria,descripcion,cantidad]);
-    //console.log(gastosArray);
+    //Guardar en la categoría correspondiente 
+    var i=seriesGrafico.findIndex(i => i.name === categoria);
+    seriesGrafico[i].data[mesesPorNumero[item.mes]]+= cantidad;
+  
+    console.log(seriesGrafico);
     });
-    console.log(gastoPorCategoria);
-    PaginaPrincipal.GastosDatatable();
-    PaginaPrincipal.GastosGrafico();
+    
+    seriesGraficoMostrar=seriesGrafico;
+    GraficoAnual.PintarGráfigo();
 }
-PaginaPrincipal.GastosGrafico = function () {
-    $("#grafico").highcharts({ 
-      colors: ["#7cb5ec", "#f7a35c"],  
+
+GraficoAnual.PintarGráfigo = function (){
+  $('#divGraficoGastos').highcharts({
     chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: false,
-      type: 'pie'
+        type: 'column'
     },
     title: {
-      text: 'Gráfico gastos mensuales'
+        text: 'Gastos en el año ' + year
+    },
+    xAxis: {
+        categories: meses
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '€ Totales en gastos'
+        }
     },
     tooltip: {
-      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} €</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
     },
     plotOptions: {
-      pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: true,
-          format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-          distance: -50,
-          filter: {
-            property: 'percentage',
-            operator: '>',
-            value: 4
-          }
+        column: {
+            pointPadding: 0.1,
+            borderWidth: 0,
         }
-      }
     },
-    series: [{
-      name: 'Share',
-      data: [
-        { name: 'Ocio', y: gastoPorCategoria.Ocio? gastoPorCategoria.Ocio : 0 },
-        { name: 'Facturas', y: gastoPorCategoria.Facturas? gastoPorCategoria.Facturas : 0 },
-        { name: 'Casa', y:gastoPorCategoria.Casa? gastoPorCategoria.Casa : 0}
-      ]
-    }]
-  });
-};  
-PaginaPrincipal.GastosDatatable = function () {
-    tablaGastos = $("#gastosMes").DataTable({
-        "data": gastosArray,
-        "paging": false,
-        "ordering": false,
-        "iDisplayLength": 20,
-        "bLengthChange": false,
-        "pagingType": "simple",
-        "bfilter": false,
-        "info": false,
-        "autoWidth": false,
-        "responsive": false,
-        "searching": false,
-        "language": {
-            "paginate": {
-                "next": "<span class='glyphicon glyphicon-chevron-right' title='Siguiente'/>",
-                "previous": "<span class='glyphicon glyphicon-chevron-left' title='Anterior'/>"
-            },
-            "sInfo": "_START_ - _END_ (_TOTAL_) ",
-            "sInfoEmpty": "0 - _END_ (_TOTAL_) ",
-            "zeroRecords": "No hay movimientos todavía",
-            "search": "búsqueda",
-        },
-        "aoColumns": [
-            { "sWidth": "32%" },
-            { "sWidth": "32%" },
-            { "sWidth": "32%" },
-        ],
-
-    });
-};
-PaginaPrincipal.loadigLoadingModal = function (tipo) {
-  //alert("loadig");
-  var html="";
-  console.log(categorias[tipo]);
-
-  $.each(categorias[tipo], function (idx, item) {
-    html += '<option value="' + item.id + '">' + item.nombreCategoria + '</option>';
+    series: seriesGraficoMostrar
 });
-console.log(html);
-  $.ajax({url: "../php/formularioAnhadirGastosIngresos.php", success: function(result){
-        $("#contentBody").html(result);
-        $("#selectCategoria").append(html);
-        $("#mes").val(mesActual).hide();
-        $("#user").val(1).hide();
-      $("#myModal").modal('show'); 
-
-  }});
-}    
+}
+//CAMBIO CATEGORIA-ACTUALIZA GRÁFICO
+GraficoAnual.cambioCategoria = function (){
+  var seleccionada=$("#selectCategoria").val();
+  seriesGraficoMostrar=[];
+  if(seleccionada !=10){
+    seriesGraficoMostrar.push(seriesGrafico[seleccionada]);
+  }else{
+    seriesGraficoMostrar=seriesGrafico;
+  }
+  GraficoAnual.PintarGráfigo();
+  console.log(seleccionada);
+}  
 $(document).ready(function () {
-  PaginaPrincipal.initCategorias();  
-hoy=new Date();
-mesActual=hoy.getMonth();
-year = hoy.getFullYear();
-console.log(mesActual);
-$("#tabsMeses").tabs({ active: mesActual});
+ var  hoy=new Date();
+  year = hoy.getFullYear();
+  GraficoAnual.initCategorias();
 
-
-console.log("js");
-    PaginaPrincipal.initGastos(); 
-   // PaginaPrincipal.initIngresos();
 });

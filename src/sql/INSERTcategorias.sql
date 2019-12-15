@@ -1,11 +1,14 @@
 INSERT INTO `categorias`(`nombreCategoria`, `tipo`) 
 VALUES 
 ('Salario','ingreso'),
-('Otros Ingresos','ingreso'),
+('Otros','ingreso'),
 ('Factura','gasto'),
 ('Ocio','gasto'),
 ('Ropa','gasto'),
 ('Supermercado','gasto'),
 ('Coche','gasto'),
 ('Casa','gastos'),
-('Otros gastos','gastos')
+('Restaurante','gastos'),
+('Salud','gastos'),
+('Transporte','gastos'),
+('Otros','gastos')

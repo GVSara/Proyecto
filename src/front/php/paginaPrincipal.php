@@ -15,7 +15,10 @@ if(!isset($_SESSION["userId"])) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?php include_once 'header.php'; ?>
- 
+<script type="text/javascript" src="../js/paginaPrincipal.js"></script>
+<script type="text/javascript" src="../js/paginaObjetivos.js"></script>
+<script type="text/javascript" src="../js/objetivosPagPrincipal.js"></script>
+
  <div id='tabsMeses' class="col-md-12">
     <ul class='nav nav-tabs'>
         <li><a data-toggle="tab" href='#tabcontent' id='tab-1' onclick='PaginaPrincipal.initIngresos(0)'>Enero</a></li>
@@ -39,14 +42,15 @@ if(!isset($_SESSION["userId"])) {
         </li>
     </ul>
 </div> 
-<div id="tabcontent">
+<div id="tabcontent" >
 <section id="main-content">
 <!-- <div id="todosLosDivs"> -->
     <div id="divIngresosGastos" class="col-md-12"'>
             
-            <div class=' col-md-4 ' id="ingresosMes"> </div>
-            <div class=' col-md-4 ' id="tituloGastsoMes"></div>
-            <div id="BotonesAñadir" class=' col-md-4 '>
+            <div class=' col-md-3 ' id="ingresosMes"> </div>
+            <div class=' col-md-3 ' id="tituloGastsoMes"></div>
+            <div class=' col-md-3 ' id="ahorroMes"></div>
+            <div id="BotonesAñadir" class=' col-md-3 '>
                 <button id="añadirGasto" class="btn btn-default" onclick="PaginaPrincipal.LoadingModalGastos()"><span
                         class="glyphicon glyphicon-minus-sign"></span>Gastos</button>
                 <button id="añadirIngreso" class="btn btn-default" onclick="PaginaPrincipal.LoadingModalIngresos()"><span
@@ -82,15 +86,17 @@ if(!isset($_SESSION["userId"])) {
         <!-- //OBJETIVO -->
         <div id="divDatosObjetivos" class="panel-body">
             <p id="nombreObjetivo"></p>
+            <div id="ahorradoObj"></div>
         </div>
     </div>
-</div>
-<div class='row'>
-    <div id='grafico' class='col-md-6'></div>
-    <div class='col-md-6'>
-        <!-- //DATOS -->
+    <div>
+<button id="verGraficoAnual" class="btn btn-default" onclick="window.location.href = 'graficoComparaciones.php'">Ver Gráfico Anual</button>
+    <div id='grafico' class='col-md-5'>
+    
     </div>
 </div>
+</div>
+
 
 </div>
 

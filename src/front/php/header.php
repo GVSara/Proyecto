@@ -3,9 +3,9 @@
     src="../resources/librerias/DataTables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
 <script type="text/javascript"
     src="../resources/librerias/DataTables/Bootstrap-3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../resources/librerias/Descargas/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../resources/librerias/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript"
-    src="../resources/librerias//DataTables/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    src="../resources/librerias/DataTables/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="../resources/librerias/Highcharts-7.2.1/code/highcharts.js"></script>
 <script src="../resources/librerias/Highcharts-7.2.1/code/modules/no-data-to-display.js"></script>
 <script src="../resources/librerias/Highcharts-7.2.1/code/modules/exporting.js"></script>
@@ -20,9 +20,7 @@
     <script type="text/javascript">
     var userId='<?php echo $session_value;?>';
     </script>
-<script type="text/javascript" src="../js/paginaPrincipal.js"></script>
-<script type="text/javascript" src="../js/paginaObjetivos.js"></script>
-<script type="text/javascript" src="../js/objetivosPagPrincipal.js"></script>
+
 <header id="main-header">
 
     <a id="logo-header" href="paginaPrincipal.php">

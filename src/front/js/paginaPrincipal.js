@@ -59,22 +59,24 @@ PaginaPrincipal.initIngresos = function (mesEnviado) {
     error: PaginaPrincipal.datosIngresosSucces,
     
   })
-  PaginaPrincipal.initGastos(mes);
+  
 };
 PaginaPrincipal.datosIngresosSucces = function (data){
-  
+    datosTableArray = [];
+    ingresos=0;
+    mes=$("#tabsMeses li.active a").html();
 console.log(data);
 $.each(data.records, function (idx, item) {
   var categoria=item.nombreCategoria;
     var descripcion=item.descripcion;
     var cantidad=parseFloat(item.cantidad);
     var tipo ="ingreso";
-  ingresos=ingresos+parseFloat(item.cantidad);
+  ingresos +=cantidad;
   datosTableArray.push([categoria,descripcion,cantidad,tipo]);
   });
 
 $("#ingresosMes").html("<h3>Saldo:"+ ingresos+ "€ </h3>");
-
+PaginaPrincipal.initGastos(mes);
 }
 
 //GASTOS
@@ -95,14 +97,15 @@ PaginaPrincipal.initGastos = function (mes) {
 PaginaPrincipal.datosGastosSucces = function (data){
   if ($.fn.DataTable.isDataTable('#gastosMes')) {
     tablaGastos.destroy();
-    datosTableArray = [];
-}
+  }
+  var totalGasto=0;
   $.each(data.records, function (idx, item) {
     var categoria=item.nombreCategoria;
     var descripcion=item.descripcion;
     var cantidad=parseFloat(item.cantidad);
     var tipo ="gasto";
-
+    
+    totalGasto += cantidad;
     if (typeof (gastoPorCategoria[categoria]) == "undefined") {
       gastoPorCategoria[categoria] = cantidad;
     console.log("categorias");
@@ -112,6 +115,8 @@ PaginaPrincipal.datosGastosSucces = function (data){
     datosTableArray.push([categoria,descripcion,cantidad,tipo]);
     //console.log(datosTableArray);
     });
+    $("#tituloGastsoMes").html("<h3>Gastos:"+ parseFloat(totalGasto).toFixed(2) +"€</h3>");
+    $("#ahorroMes").html("<h3>Ahorro:" +(ingresos - totalGasto).toFixed(2) +"€</h3>");
     console.log(gastoPorCategoria);
     PaginaPrincipal.GastosDatatable();
     PaginaPrincipal.GastosGrafico();
@@ -122,7 +127,7 @@ PaginaPrincipal.datosGastosSucces = function (data){
 PaginaPrincipal.GastosGrafico = function () {
     $("#grafico").highcharts({ 
       colors:['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
-      '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],  
+      '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92','#d5db97'],  
     chart: {
       plotBackgroundColor: null,
       plotBorderWidth: null,
@@ -154,11 +159,11 @@ PaginaPrincipal.GastosGrafico = function () {
       name: 'Share',
       data: [
         { name: 'Ocio', y: gastoPorCategoria.Ocio? gastoPorCategoria.Ocio : 0 },
-        { name: 'Facturas', y: gastoPorCategoria.Facturas? gastoPorCategoria.Facturas : 0 },
+        { name: 'Factura', y: gastoPorCategoria.Factura? gastoPorCategoria.Factura : 0 },
         { name: 'Casa', y:gastoPorCategoria.Casa? gastoPorCategoria.Casa : 0},
         { name: 'Transporte', y: gastoPorCategoria.Transporte? gastoPorCategoria.Transporte : 0 },
         { name: 'Salud', y: gastoPorCategoria.Salud? gastoPorCategoria.Salud : 0 },
-        { name: 'Restaurantes', y:gastoPorCategoria.Restaurantes? gastoPorCategoria.Restaurantes : 0},
+        { name: 'Restaurante', y:gastoPorCategoria.Restaurante? gastoPorCategoria.Restaurante : 0},
         { name: 'Otros', y: gastoPorCategoria.Otros? gastoPorCategoria.Otros : 0 },
         { name: 'Coche', y: gastoPorCategoria.Coche? gastoPorCategoria.Coche : 0 },
         { name: 'Supermercado', y:gastoPorCategoria.Supermercado? gastoPorCategoria.Supermercado : 0},
@@ -176,7 +181,7 @@ PaginaPrincipal.GastosDatatable = function () {
         "data": datosTableArray,
         "paging": true,
         "ordering": true,
-        "iDisplayLength": 5,
+        "iDisplayLength": 11,
         "bLengthChange": false,
         "pagingType": "simple",
         "bfilter": false,
@@ -214,41 +219,9 @@ PaginaPrincipal.GastosDatatable = function () {
             { "sWidth": "32%" },
             { "sWidth": "0%" },
         ],
-        "footerCallback": function ( row, data, start, end, display ) {
-          var api = this.api(), data;
-
-          // Remove the formatting to get integer data for summation
-          var intVal = function ( i ) {
-              return typeof i === 'string' ?
-                  i.replace(/[\$,]/g, '')*1 :
-                  typeof i === 'number' ?
-                      i : 0;
-          };
-
-          // Total over all pages
-          total = api
-              .column(2)
-              .data()
-              .reduce( function (a, b) {
-                  return intVal(a) + intVal(b);
-              }, 0 );
-
-         /* // Total over this page
-          pageTotal = api
-              .column( 2, { page: 'current'} )
-              .data()
-              .reduce( function (a, b) {
-                  return intVal(a) + intVal(b);
-              }, 0 );
-
-          // Update footer
-          $( api.column(2).footer() ).html(
-              pageTotal +'€ ('+ total +' € total)'
-          );*/
-      }
-
+        
     });
-    $("#tituloGastsoMes").html("<h3>Gastos:"+parseFloat(total-ingresos).toFixed(2)+"€</h3>");
+   
 };
 
 //MODALES
@@ -257,7 +230,7 @@ PaginaPrincipal.LoadingModalGastos = function () {
   //alert("loadig");
   var html="";
   console.log(categorias["ingreso"]);
-  var mes=meses[mesActual]
+  var mes=$("#tabsMeses li.active a").html();
   $.each(categorias["gasto"], function (idx, item) {
     html += '<option value="' + item.id + '">' + item.nombreCategoria + '</option>';
 });
@@ -276,7 +249,7 @@ PaginaPrincipal.LoadingModalIngresos = function () {
   //alert("loadig");
   var html="";
   console.log(categorias["ingreso"]);
-  var mes=meses[mesActual]
+  var mes=$("#tabsMeses li.active a").html();
   $.each(categorias["ingreso"], function (idx, item) {
     html += '<option value="' + item.id + '">' + item.nombreCategoria + '</option>';
 });
@@ -294,7 +267,7 @@ console.log(html);
 
 PaginaPrincipal.LoadingModalObjetivos = function () {
   //alert("loadig");
-  var mes=meses[mesActual]
+  var mes=$("#tabsMeses li.active a").html();
   $.ajax({url: "../php/formularioAnhadirObjetivos.php", success: function(result){
         $("#contentBody").html(result);
         $(".modal-title").html("Añade tu objetivo");
@@ -311,7 +284,12 @@ hoy=new Date();
 mesActual=hoy.getMonth();
 year = hoy.getFullYear();
 console.log(mesActual);
-//$("#tabsMeses").tabs({ active: mesActual});
+
+var searchParams = new URLSearchParams(window.location.search)
+if(searchParams.has('mes')){
+param = searchParams.get('mes')
+ mesActual=mesesNumero[param];
+}    
 $("#tabsMeses li").eq(mesActual).addClass('active');
 
 console.log(userId);

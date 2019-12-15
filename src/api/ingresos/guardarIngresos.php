@@ -12,14 +12,6 @@ $ingreso = new Ingresos($db);
 
 $metodo = $_SERVER['REQUEST_METHOD']; 
         if ('POST' === $metodo) {
-        // comprobar se hai máis de 0 rexistros devoltos
-         $data = json_decode(file_get_contents('php://input'));
-        //         if (is_null($data)) {
-        //             header('HTTP/1.1 400 Bad Request');
-        //             $this->result();
-        //             return;
-        //         }
-
                 $ingreso->anho = intval($year);
                 $ingreso->mes = $_POST['mes'] ;
                 $ingreso->descripcion = $_POST['descripcion'];
@@ -29,11 +21,11 @@ $metodo = $_SERVER['REQUEST_METHOD'];
             }
 
 
-
+$mes= $ingreso->mes;
 if($ingreso->crear()){
     
     //http_response_code(201);
-    header('Location: ../../front/php/paginaPrincipal.php');
+    header('Location: ../../front/php/paginaPrincipal.php?mes='.$mes);
 
 }else{
 

@@ -35,6 +35,7 @@ if ('GET' === $metodo) {
             "nombreCategoria"=> $item["nombreCategoria"],
             "descripcion" => utf8_decode($item["descripcion"]),
             "cantidad" => $item["cantidad"],
+            "mes"=> $item["mes"],
         );
         array_push($gastos_arr["records"],$item_gasto);
     }

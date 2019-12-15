@@ -30,13 +30,13 @@ ObjetivosPaginaPrincipal.initObjetivos = function () {
     idObjetivo=item.idobjetivos;
     console.log("id" + idObjetivo);
     var objetivo=item.objetivo;
-    $("#nombreObjetivo").html(objetivo);
       porcentaje=item.porcentaje;
       cantidad=item.cantidad;
       ahorrado=item.ahorrado;
       estado=item.estado;
       mesObjetivo=item.mes;
       yearObjetivo=item.anho;
+      $("#nombreObjetivo").html(objetivo +"("+cantidad+")€");
     });
     ObjetivosPaginaPrincipal.initIngresos();  
     
@@ -134,9 +134,10 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
     totalObtenidoObjeto=0;
   }
   if (totalObtenidoObjeto >=  cantidad){
-    $("#divDatosObjetivos").html("<h2 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h2><br><h2 style='text-align:center'>Felicidades, has cumplido tu objetivo</h2>");
+    $("#ahorradoObj").html("<h4 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h4><p style='text-align:center'>Felicidades, has cumplido tu objetivo</p>");
+    $("#glyphiconAñadirObjetivo").show();
   }else{
-    $("#divDatosObjetivos").html("<h2 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h2>");
+    $("#ahorradoObj").html("<h4 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h4>");
   }
   console.log("Ahorrado:"+totalObtenidoObjeto);
   if(ahorrado!=totalObtenidoObjeto){

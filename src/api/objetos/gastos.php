@@ -36,7 +36,7 @@ class Gastos{
    } 
    function leerGastosAnho(){
     try{
-        $stmt =$this->conn->prepare("SELECT G.descripcion, G.cantidad, C.nombreCategoria FROM ". $this->tabla ." G INNER JOIN ". $this->tablaCategorias ." C ON G.categorias_idcategorias = C.idcategorias WHERE usuarios_idusuario = ? AND anho = ?");
+        $stmt =$this->conn->prepare("SELECT G.descripcion, G.cantidad, G.mes, C.nombreCategoria FROM ". $this->tabla ." G INNER JOIN ". $this->tablaCategorias ." C ON G.categorias_idcategorias = C.idcategorias WHERE usuarios_idusuario = ? AND anho = ?");
         $stmt->bind_param('ii', $this->id, $this->anho); 
 
     }catch(Exception $err){
