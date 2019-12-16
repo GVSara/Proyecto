@@ -13,7 +13,7 @@ PaginaObjetivos.initObjetivos = function () {
     })
   };
   PaginaObjetivos.datosObjetivosSucces = function (data){
-  console.log(data);
+
   $.each(data.records, function (idx, item) {
       var objetivo=item.objetivo;
       var porcentaje="<span>"+item.porcentaje+"%</span>";;
@@ -27,7 +27,7 @@ PaginaObjetivos.initObjetivos = function () {
 
       objetivosArray.push([objetivo,porcentaje,cantidad,ahorrado,estado,mes,anho]);
     });
-    console.log(objetivosArray);
+
     PaginaObjetivos.ObjetivosDatatable();
   }
   PaginaObjetivos.ObjetivosDatatable = function () {

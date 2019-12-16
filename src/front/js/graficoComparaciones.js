@@ -13,7 +13,7 @@ GraficoAnual.initCategorias = function () {
   })
 };
 GraficoAnual.datosSuccesCategorias = function (data){
-  console.log(data);
+
   var html='<option value="10">Todas</option>';
   var i=0;
   $.each(data.records, function (idx, item) {
@@ -29,7 +29,6 @@ GraficoAnual.datosSuccesCategorias = function (data){
       i += 1;
     }
     $("#selectCategoria").html(html);
-    console.log(seriesGrafico);
    
     });
     
@@ -53,7 +52,7 @@ GraficoAnual.datosGastosSucces = function (data){
     var i=seriesGrafico.findIndex(i => i.name === categoria);
     seriesGrafico[i].data[mesesPorNumero[item.mes]]+= cantidad;
   
-    console.log(seriesGrafico);
+
     });
     
     seriesGraficoMostrar=seriesGrafico;
@@ -91,6 +90,9 @@ GraficoAnual.PintarGráfigo = function (){
             borderWidth: 0,
         }
     },
+    lang: {
+      noData: 'No hay gastos para mostrar'
+     },
     series: seriesGraficoMostrar
 });
 }
@@ -104,7 +106,7 @@ GraficoAnual.cambioCategoria = function (){
     seriesGraficoMostrar=seriesGrafico;
   }
   GraficoAnual.PintarGráfigo();
-  console.log(seleccionada);
+
 }  
 $(document).ready(function () {
  var  hoy=new Date();

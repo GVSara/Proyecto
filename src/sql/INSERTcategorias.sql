@@ -7,8 +7,8 @@ VALUES
 ('Ropa','gasto'),
 ('Supermercado','gasto'),
 ('Coche','gasto'),
-('Casa','gastos'),
-('Restaurante','gastos'),
-('Salud','gastos'),
-('Transporte','gastos'),
-('Otros','gastos')
+('Casa','gasto'),
+('Restaurante','gasto'),
+('Salud','gasto'),
+('Transporte','gasto'),
+('Otros','gasto')

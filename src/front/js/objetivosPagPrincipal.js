@@ -25,10 +25,10 @@ ObjetivosPaginaPrincipal.initObjetivos = function () {
     })
   };
   ObjetivosPaginaPrincipal.datosObjetivosSucces = function (data){
-  console.log(data);
+
   $.each(data.records, function (idx, item) {
     idObjetivo=item.idobjetivos;
-    console.log("id" + idObjetivo);
+
     var objetivo=item.objetivo;
       porcentaje=item.porcentaje;
       cantidad=item.cantidad;
@@ -50,13 +50,13 @@ ObjetivosPaginaPrincipal.initIngresos = function () {
   })
 };
 ObjetivosPaginaPrincipal.datosIngresosSucces = function (data){
-console.log("ingresos Objetivos");
+
 $.each(data.records, function (idx, item) {
   if (typeof (ingresosParaObjetivos[item.anho]) == "undefined") {
     ingresosParaObjetivos[item.anho]={};
     ingresosParaObjetivos[item.anho][item.mes]=[];
     ingresosParaObjetivos[item.anho][item.mes]= item.cantidad;
-  console.log(ingresosParaObjetivos);
+
   }else{
     if (typeof (ingresosParaObjetivos[item.anho][item.mes]) == "undefined") {
       ingresosParaObjetivos[item.anho][item.mes]=[];
@@ -82,14 +82,14 @@ ObjetivosPaginaPrincipal.initGastos = function () {
   })
 };
 ObjetivosPaginaPrincipal.datosGastosSucces = function (data){
-  console.log("gastos Objetivos");
+
 $.each(data.records, function (idx, item) {
   $("#glyphiconAñadirObjetivo").hide();
   if (typeof (gastosParaObjetivos[item.anho]) == "undefined") {
     gastosParaObjetivos[item.anho]={};
     gastosParaObjetivos[item.anho][item.mes]=[];
     gastosParaObjetivos[item.anho][item.mes]=parseFloat(item.cantidad);
-  console.log(parseFloat(item.cantidad));
+
   }else{
     if (typeof (gastosParaObjetivos[item.anho][item.mes]) == "undefined") {
       gastosParaObjetivos[item.anho][item.mes]=[];
@@ -107,16 +107,15 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
   var ingresosTotal=0;
   var gastosTotal=0;
  var mesNumeroObj=mesesNumero[mesObjetivo];
-  console.log(yearObjetivo);
-  console.log(year);
+
   if(yearObjetivo == year){
-     console.log("dentro if");
+
     
     for(mesNumeroObj;mesNumeroObj<=mesActual;mesNumeroObj++){
       ingresosTotal +=parseFloat(ingresosParaObjetivos[yearObjetivo][meses[mesNumeroObj]])
       gastosTotal +=parseFloat(gastosParaObjetivos[yearObjetivo][meses[mesNumeroObj]])
     }
-    console.log("Total:" + parseFloat(ingresosTotal).toFixed(2));
+
   }else{
     var mesFor=11;
     for(yearObjetivo;yearObjetivo<=year;yearObjetivo++){
@@ -139,7 +138,7 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
   }else{
     $("#ahorradoObj").html("<h4 style='text-align:center'>"+parseFloat(totalObtenidoObjeto).toFixed(2)+"€</h4>");
   }
-  console.log("Ahorrado:"+totalObtenidoObjeto);
+
   if(ahorrado!=totalObtenidoObjeto){
     if (totalObtenidoObjeto >= cantidad){
      var data={
@@ -168,4 +167,6 @@ ObjetivosPaginaPrincipal.calculoObjetivo = function (){
  };
 $(document).ready(function () {
   ObjetivosPaginaPrincipal.initObjetivos();
+
+  
 });
